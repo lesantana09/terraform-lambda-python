@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_event_rule" "test-lambda" {
   name                = "run-lambda-function"
   description         = "Schedule lambda function"
-  schedule_expression = "rate(10 minutes)"
+  schedule_expression = "rate(120 minutes)"
 }
 
 resource "aws_cloudwatch_event_target" "lambda-function-target" {

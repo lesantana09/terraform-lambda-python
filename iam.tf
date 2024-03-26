@@ -43,3 +43,17 @@ resource "aws_iam_role_policy_attachment" "terraform_lambda_cloudwatch" {
   policy_arn = aws_iam_policy.create_logs_cloudwatch.arn
   role       = aws_iam_role.lambda_role.name
 }
+
+resource "aws_iam_role_policy_attachment" "lambda_basic" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  role = aws_iam_role.lambda_role.name
+}
+
+resource "aws_lambda_permission" "apigw_lambda" {
+  statement_id = "AllowExecutionFromAPIGateway"
+  action = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.test_lambda_function.function_name
+  principal = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_api_gateway_rest_api.api_lambda.execution_arn}/*/*/*"
+}
